@@ -73,7 +73,11 @@ class Host(object):
 
 
 def remember_function_output_decorator(func):
-    pass
+    def func(self)
+        return func
+    self.func= SaveValue
+
+
 
 
 class Guest(object):
@@ -91,7 +95,7 @@ class Guest(object):
         if not self.memory:
             raise ValueError("Guest doesn't has memory!")
         return self.memory[-1]
-
+    @remember_function_output_decorator()
     def _choose_strategy_random(self, options):
         """Random Strategy
         The "random" strategy returns a random choice of all the available options.
@@ -101,7 +105,7 @@ class Guest(object):
         option = random.choice([door_name for door_name in options.keys()])
         self.memory.append(option)
         return option
-
+    @remember_function_output_decorator()
     def _choose_strategy_stay(self, options):
         """Stay Strategy
         The "stay" strategy return the previous choice.
@@ -111,7 +115,7 @@ class Guest(object):
         option = self.get_latest_choice()
         self.memory.append(option)
         return option
-
+    @remember_function_output_decorator()
     def _choose_strategy_change(self, options):
         """Change Strategy
         The "change" strategy returns any available option different than the current one (latest).

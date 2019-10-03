@@ -33,7 +33,12 @@ class Main(object):
     @staticmethod
     def play_multiple_games(strategy="random", times=100, opts=3, save=""):
         # TODO: implement multiple games
-        raise NotImplementedError
+        results=[]
+        for i in range(times):
+            results.append(resultsplay_random_game(number_of_options=opts, strategy=strategy))
+        print(results)
+        if save:
+            results.to_csv(save)
 
 
 if __name__ == "__main__":

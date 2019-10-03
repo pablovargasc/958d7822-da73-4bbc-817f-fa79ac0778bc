@@ -4,7 +4,12 @@ import matplotlib.pyplot as plt
 
 
 class Cashflow(object):
-    """Cashflow
+    def __init__(self, amount, t):
+        self.amount=amount
+        self.t=t
+    def present_value(self, interest_rate):
+        return self.amount * (1+interest_rate) ** self.t
+        """Cashflow
     Create a cashflow-class definition.
     
     Attributes: 
@@ -42,18 +47,29 @@ class InvestmentProject(object):
         :param show: boolean that represents whether to run `plt.show()` or not.
         :return: matplotlib figure object.
         """
-        # TODO: implement plot method
-        raise NotImplementedError
+        self.fig = plt.figure()
+        self.ax = self.fig.add_subplot(111)
+
+        self.figure = self.ax.plot([flow.t for flow in self.cashflows], [flow.amount for flow in self.cashflows])
+        if show:
+            plt.show()
+        if kwargs.get('name'):
+            plt.title('cashflows')
+            plt.ylabel('amount')
+            plt.xlabel('t')
+            self.fig.savefig(kwargs.get('name'))
 
 
     def net_present_value(self, interest_rate=None):
+
         """ Net Present Value
         Calculate the net-present value of a list of cashflows.
         :param interest_rate: represents the discount rate.
         :return: a number (currency) representing the net-present value.
         """
-        # TODO: implement net_present_value method
-        raise NotImplementedError
+        return sum([flow.present_value(interest_rate=interest_rate) for flow in
+                    self.cashflows]) if not interest_rate == None else sum(
+            [flow.present_value(interest_rate=self.hurdle_rate) for flow in self.cashflows])
 
     def equivalent_annuity(self, interest_rate=None):
         """ Equivalent Annuity
@@ -61,8 +77,7 @@ class InvestmentProject(object):
         :param interest_rate: represents the interest-rate used with the annuity calculations.
         :return: a number (currency) representing the equivalent annuity.
         """
-        # TODO: implement equivalent_annuity methdo
-        raise NotImplementedError
+        return self.net_present_value(interest_rate=interest_rate)
 
     def describe(self):
         return {
